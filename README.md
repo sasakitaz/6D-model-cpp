@@ -4,7 +4,7 @@ Hamiltonian行列を生成し，対角化を行います．場合によっては
 Hamiltonian行列全体を生成・対角化するのではなく，量子数mに関して個別にブロック行列を生成するので，目的の量子数mを入力することに注意してください．
 
 ## 使い方
-Eigen(https://eigen.tuxfamily.org/index.php?title=Main_Page)をダウンロードし，main.cppと同じ階層にEigenフォルダを入れてください．
+Eigen( https://eigen.tuxfamily.org/index.php?title=Main_Page )をダウンロードし，main.cppと同じ階層にEigenフォルダを入れてください．
 
 parameter.hにポテンシャルパラメータ，その他質量などのパラメータを入力してください．
 特によい量子数mはここで入力します．
