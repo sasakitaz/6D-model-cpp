@@ -7,7 +7,7 @@ Hamiltonian行列全体を生成・対角化するのではなく，量子数m�
 Eigen( https://eigen.tuxfamily.org/index.php?title=Main_Page )をダウンロードし，main.cppと同じ階層にEigenフォルダを入れてください．
 
 parameter.hにポテンシャルパラメータ，その他質量などのパラメータを入力してください．
-特によい量子数mはここで入力します．
+よい量子数mはここで入力します．
 単位はcm^-1, Åです．
 
 main.cppを実行すると対称化の方法を訊かれます．
