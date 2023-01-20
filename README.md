@@ -15,11 +15,8 @@ main.cppを実行すると対称化の方法を訊かれます．
 
 ### コンパイル環境
 Windows10
-
 g++ (MSYS2 MinGW x64)
-
 LAPACK 3.10.1-1
-
 Eigen 3.4.0
 
 ### コンパイルコマンド
