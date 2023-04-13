@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "Parameter.h"
-#define PRINT_MAT(X) cout << #X << ":\n" << X << endl << endl
+#define PRINT_MAT(X) cout << #X << ":\n" << X << endl << endl   //行列の出力
 
 /* Complex datatype */
 struct _dcomplex { double re, im; };
@@ -19,8 +19,6 @@ extern "C" {
 /* Auxiliary routines prototypes */
 //extern void print_matrix( const char* desc, int m, int n, dcomplex* a, int lda );
 //extern void print_rmatrix( const char* desc, int m, int n, double* a, int lda );
-
-
 
 /* Auxiliary routine: printing a matrix */
 void print_matrix( const char* desc, int m, int n, dcomplex* a, int lda ) {
@@ -74,6 +72,7 @@ tuple<Eigen::VectorXd, Eigen::Matrix<complex<double>, Eigen::Dynamic, Eigen::Dyn
             }
         }
 
+       
         /* Executable statements */
         /* Negative abstol means using the default value */
         abstol = -1.0;
@@ -103,14 +102,22 @@ tuple<Eigen::VectorXd, Eigen::Matrix<complex<double>, Eigen::Dynamic, Eigen::Dyn
         /* Check for convergence */
         if( info > 0 ) {
                 printf( "The algorithm failed to compute eigenvalues.\n" );
+                free( (void*)isuppz );
+                free( (void*)w );
+                free( (void*)z );
+                free( (void*)a );
+                free( (void*)iwork );
+                free( (void*)rwork );
+                free( (void*)work );
                 exit( 1 );
+
         }
 
         clock_t end_zheevr = clock();
         const double time_zheevr = static_cast<double>(end_zheevr - start_zheevr) / CLOCKS_PER_SEC;
         printf("zheevr time %lf[s]\n", time_zheevr);
 
-        ofstream time("result_run_time.txt", ios::app); 
+        ofstream time("result_run_time.txt", ios::app);    //txtファイル書き出し
         time << "zheevr time " << time_zheevr << "[s]\n";
         time.close();
 
@@ -126,8 +133,18 @@ tuple<Eigen::VectorXd, Eigen::Matrix<complex<double>, Eigen::Dynamic, Eigen::Dyn
                 eig_vec(ii, jj).imag(z[ii+jj*N].im);
             }
         }
-
+        
+        /* Print the number of eigenvalues found */
+        //printf( "\n The total number of eigenvalues found:%2i\n", m );
+        /* Print eigenvalues */
+        //print_rmatrix( "Selected eigenvalues", 1, m, w, 1 );
+        /* Print eigenvectors */
+        //print_matrix( "Selected eigenvectors (stored columnwise)", n, m, z, ldz );
         /* Free workspace */
+        free( (void*)isuppz );
+        free( (void*)w );
+        free( (void*)z );
+        free( (void*)a );
         free( (void*)iwork );
         free( (void*)rwork );
         free( (void*)work );
