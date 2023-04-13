@@ -5,23 +5,23 @@
 #include <numeric>  //accumulate
 #include <cmath>
 #include <bits/stdc++.h>    //pi: M_PI
-#include "Eigen/Core"   // x(行, 列)
-#include "Eigen/Dense"  // 固有値計算ルーチンの入ったインクルードファイル
-#define PRINT_MAT(X) cout << #X << ":\n" << X << endl << endl   //行列の出力
+#include "Eigen/Core"   // x(row, column)
+#include "Eigen/Dense"  
+#define PRINT_MAT(X) cout << #X << ":\n" << X << endl << endl   //output matrix form
 
 using namespace std;
 
 //double M_PI = 3.141592653589793;
 
 //global parameter
-//なんか重要なやつ
-const extern __declspec(selectany) int calcm = 0;  //量子数m
-const extern __declspec(selectany) double diag_coeff = 0.1;   //txtファイルに書き出す固有ベクトルの係数の最低値
+//frequantly changeing parameter
+const extern __declspec(selectany) int calcm = 0;  //good quantum number m
+const extern __declspec(selectany) double diag_coeff = -1;   //Minimum value of eigenvector coefficients to be written to vector.txt file
 // matrix size
-const extern __declspec(selectany) int n0 = 2;
+const extern __declspec(selectany) int n0 = 1;
 const extern __declspec(selectany) int npls = 2;
 const extern __declspec(selectany) int nmns = 2;
-const extern __declspec(selectany) int j = 2;   
+const extern __declspec(selectany) int j = 3;   
 
 //residuals < 50
 //potential parameter
@@ -49,21 +49,20 @@ double kxxxx = 0;
 double n = 6;
 double Re = 3.6316;
 
+//constant
+double hbar = 1.05457*pow(10, -34);
+double c = 2.998*pow(10, 8);
+double Iz = 3.81036*pow(10, -25);
+double Ix = 1.45451*pow(10, -25);
 double B = 5.241;
+double mu = 2.20541*pow(10, -26);
+double mub = pow(1/mu + Re*Re/Ix, -1);
+double omegas = 1/(2*M_PI)*sqrt(2*kzz*az*az*1.98645*pow(10, -23)*pow(10, 20)/mu);
+double omegab = 1/(2*M_PI)*sqrt(2*kxx*1.98645*pow(10, -23)*pow(10, 20)/mub);
+//double shbaromega = omegas/c/100;
+//double bhbaromega = omegab/c/100;
 double shbaromega =  10/(2*M_PI*2.998)*sqrt(6.02*1.98645*2/1.328*kzz*az*az); //Bz-CH4 #pseudo diatom molecule's reduced masss (hbar omega)/4
 double bhbaromega =  10/(2*M_PI*2.998)*sqrt(6.02*1.98645*2*10*kxx*(1/13.28 + 0.1497));  //Bz-CH4 #pseudo diatom molecule's reduced masss (hbar omega)/4
-
-/*
-#B = 2.621 #Bz-CD4
-#shbaromega = 10/(2*np.pi*2.998)*np.sqrt(6.02*1.98645*2*10/15.92*kzz)  #Bz-CD4
-#bhbaromega =  10/(2*np.pi*2.998)*np.sqrt(6.02*1.98645*2*10*kxx*(1/15.92 + 0.1497))  #Bz-CD4 
-*/  
-/*
-double B = 5.241;
-double shbaromega =  10/(2*M_PI*2.998)*sqrt(6.02*1.98645*2/1.344*kzz*az*az); //Bz-d6-CH4 #pseudo diatom molecule's reduced masss (hbar omega)/4
-double bhbaromega =  10/(2*M_PI*2.998)*sqrt(6.02*1.98645*2*10*kxx*(1/13.44 + 0.1238));  //Bz-d6-CH4 #pseudo diatom molecule's reduced masss (hbar omega)/4
-*/
-
 
 class MatrixParameter 
 {
@@ -75,19 +74,17 @@ public:
         , krow(temkrow)
         , n0row(temn0row)
         , vrow(temvrow)
-        //, lrow(temlrow)
         , lrow(m - mBrow)
         , jcolumn(temjcolumn)
         , mBcolumn(temmBcolumn)
         , kcolumn(temkcolumn)
         , n0column(temn0column)
         , vcolumn(temvcolumn)
-        //, lcolumn(temlcolumn)
         , lcolumn(m - mBcolumn)
     {
     }
-    int matrix_size(); //行列サイズ
-    tuple<vector<int>, vector<int>, vector<int>>size_vec(); //行列サイズに関連する諸々の量、固有ベクトルの計算に使う
+    int matrix_size(); //matrix size
+    tuple<vector<int>, vector<int>, vector<int>>size_vec(); 
     int row2();
     int row3();
     int row4();
@@ -193,11 +190,7 @@ tuple<vector<int>, vector<int>, vector<int>> MatrixParameter::size_vec()
             }
         }
     }
-    /*
-    dim.erase(0);
-    allowl.erase(0);
-    allowmB.erase(0);
-    */
+
     return forward_as_tuple(dim, allowl, allowmB);
 }
 
