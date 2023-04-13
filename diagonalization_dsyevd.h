@@ -1,3 +1,8 @@
+/***********************************************************************************************
+2023.04.14 追記
+free( (void*)a );
+free( (void*)w );
+************************************************************************************************/
 #pragma once
 #include <stdlib.h>
 #include <stdio.h>
@@ -63,13 +68,16 @@ tuple<Eigen::VectorXd, Eigen::MatrixXd> diagonalization_dsyevd(Eigen::MatrixXd m
         if( info > 0 ) {
                 printf( "The algorithm failed to compute eigenvalues.\n" );
                 exit( 1 );
+                free( (void*)a );
+                free( (void*)iwork );
+                free( (void*)work );
         }
 
         clock_t end_dsyevd = clock();
         const double time_dsyevd = static_cast<double>(end_dsyevd - start_dsyevd) / CLOCKS_PER_SEC * 1000.0;
         printf("dsyevd time %lf[ms]\n", time_dsyevd);
 
-        ofstream time("result_run_time.txt", ios::app); 
+        ofstream time("result_run_time.txt", ios::app);    //txtファイル書き出し
         time << "dsyevd time " << time_dsyevd << "[ms]\n";
         time.close();
 
@@ -94,6 +102,7 @@ tuple<Eigen::VectorXd, Eigen::MatrixXd> diagonalization_dsyevd(Eigen::MatrixXd m
         /* Print eigenvectors */
         //print_matrix( "Eigenvectors (stored columnwise)", n, n, a, lda );
         /* Free workspace */
+        free( (void*)a );
         free( (void*)iwork );
         free( (void*)work );
         //exit( 0 );
