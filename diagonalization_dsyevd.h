@@ -2,6 +2,9 @@
 2023.04.14 追記
 free( (void*)a );
 free( (void*)w );
+
+2023.04.18 追記
+ポインタを使って配列aへの移し替えを省略：a = mat.data();
 ************************************************************************************************/
 #pragma once
 #include <stdlib.h>
@@ -41,12 +44,7 @@ tuple<Eigen::VectorXd, Eigen::MatrixXd> diagonalization_dsyevd(Eigen::MatrixXd m
         /* Local arrays */
         double w[N];
         double* a;
-        a = (double*)malloc( N*N*sizeof(double) );
-        for(int i=0; i<N; i++ ){
-            for(int j=0; j<=i; j++ ){
-                a[i+j*lda]  = mat(i, j);
-            }
-        }
+        a = mat.data();
 
         /* Executable statements */
         /* Query and allocate the optimal workspace */
@@ -93,6 +91,7 @@ tuple<Eigen::VectorXd, Eigen::MatrixXd> diagonalization_dsyevd(Eigen::MatrixXd m
                 eig_vec(ii, jj) = a[ii+jj*N];
             }
         }
+        
         clock_t end_kakiutusi = clock();
         const double time_kakiutusi = static_cast<double>(end_kakiutusi - start_kakiutusi) / CLOCKS_PER_SEC * 1000.0;
         printf("kakiutusi time %lf[ms]\n", time_kakiutusi);
@@ -102,7 +101,6 @@ tuple<Eigen::VectorXd, Eigen::MatrixXd> diagonalization_dsyevd(Eigen::MatrixXd m
         /* Print eigenvectors */
         //print_matrix( "Eigenvectors (stored columnwise)", n, n, a, lda );
         /* Free workspace */
-        free( (void*)a );
         free( (void*)iwork );
         free( (void*)work );
         //exit( 0 );
