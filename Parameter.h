@@ -16,53 +16,55 @@ using namespace std;
 //global parameter
 //frequantly changeing parameter
 const extern __declspec(selectany) int calcm = 0;  //good quantum number m
-const extern __declspec(selectany) double diag_coeff = -1;   //Minimum value of eigenvector coefficients to be written to vector.txt file
+const extern __declspec(selectany) double diag_coeff = 0.1;   //Minimum value of eigenvector coefficients to be written to vector.txt file
 // matrix size
-const extern __declspec(selectany) int n0 = 1;
+const extern __declspec(selectany) int n0 = 2;
 const extern __declspec(selectany) int npls = 2;
 const extern __declspec(selectany) int nmns = 2;
-const extern __declspec(selectany) int j = 3;   
+const extern __declspec(selectany) int j = 2;   
+
 
 //residuals < 50
 //potential parameter
-double V3 = -50.113;
-double V4 = 2.8980;
+double V3 = -50;
+double V4 = 3;
 
-double VR3 = -191.57;
-double VR4 = 11.360;
+double VR3 = -200;
+double VR4 = 10;
 
-double VRR3 = 322.19;
+double VRR3 = 300;
 double VRR4 = 0;
 
-double Vrho3 = 42.15;
-double Vrho4 = -1.0367;
+double Vrho3 = 40;
+double Vrho4 = -1;
 
-double Vam31 = 477.34;
-double VamR31 = - 2173120;
+double Vam31 = 500;
+double VamR31 = - 2000000;
 
-double kxx = 145.14;
-double kzz = 622.44;
-double kxxz= -183.70;
-double az = 1.4440;
+
+double kxx = 150;
+double kzz = 600;
+double kxxz= -200;
+double az = 1.5;
 double kxxxx = 0;
-
 double n = 6;
-double Re = 3.6316;
+double Re = 3.7;
+
+
 
 //constant
 double hbar = 1.05457*pow(10, -34);
 double c = 2.998*pow(10, 8);
-double Iz = 3.81036*pow(10, -25);
-double Ix = 1.45451*pow(10, -25);
+double Iz = hbar*hbar/(2*0.0948809)*5.03412*pow(10, 22); //長さはm単位　実験値から定義。
+double Ix = hbar*hbar/(2*0.1897618)*5.03412*pow(10, 22);
 double B = 5.241;
-double mu = 2.20541*pow(10, -26);
-double mub = pow(1/mu + Re*Re/Ix, -1);
-double omegas = 1/(2*M_PI)*sqrt(2*kzz*az*az*1.98645*pow(10, -23)*pow(10, 20)/mu);
-double omegab = 1/(2*M_PI)*sqrt(2*kxx*1.98645*pow(10, -23)*pow(10, 20)/mub);
-//double shbaromega = omegas/c/100;
-//double bhbaromega = omegab/c/100;
-double shbaromega =  10/(2*M_PI*2.998)*sqrt(6.02*1.98645*2/1.328*kzz*az*az); //Bz-CH4 #pseudo diatom molecule's reduced masss (hbar omega)/4
-double bhbaromega =  10/(2*M_PI*2.998)*sqrt(6.02*1.98645*2*10*kxx*(1/13.28 + 0.1497));  //Bz-CH4 #pseudo diatom molecule's reduced masss (hbar omega)/4
+double mu = 2.20541*pow(10, -26);   //Bz-CH4
+double mub = mu;
+double Re2Ix = (Re*pow(10, -10))*(Re*pow(10, -10))/Ix;
+double omegas = sqrt(2*kzz*az*az*1.98645*pow(10, -23)*pow(10, 20)/mu);   //単位はs-1
+double omegab = sqrt(2*kxx*1.98645*pow(10, -23)*pow(10, 20)/mub);   //単位はs-1
+double shbaromega = 1/(2*M_PI)*omegas/c/100;    //単位変換で1/hcをかけ、hbarをかけるため、2\piが必要。
+double bhbaromega = 1/(2*M_PI)*omegab/c/100;
 
 class MatrixParameter 
 {
